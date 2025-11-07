@@ -33,7 +33,7 @@
             <div class="tab-selector" id="tabSelector" onclick="toggleTabDropdown()">
                 <span class="tab-selector-icon" id="tabSelectorIcon">📋</span>
                 <span class="tab-selector-text" id="tabSelectorText">个人简历</span>
-                <span class="tab-selector-badge" id="tabSelectorBadge">1/7</span>
+                <span class="tab-selector-badge" id="tabSelectorBadge">1/8</span>
                 <span class="tab-selector-arrow">▼</span>
             </div>
             <div class="tab-dropdown" id="tabDropdown">
@@ -72,6 +72,11 @@
                     <span class="tab-dropdown-label">面试技巧</span>
                     <span class="tab-dropdown-check">✓</span>
                 </div>
+                <div class="tab-dropdown-item" data-tab="7" onclick="selectTab(7)">
+                    <span class="tab-dropdown-icon">☕</span>
+                    <span class="tab-dropdown-label">Java基础</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
             </div>
         </div>
 
@@ -94,6 +99,9 @@
             <div class="loading">加载中...</div>
         </div>
         <div class="content" id="content6">
+            <div class="loading">加载中...</div>
+        </div>
+        <div class="content" id="content7">
             <div class="loading">加载中...</div>
         </div>
     </div>
@@ -160,6 +168,10 @@
             <div class="tab-nav-item" data-tab="6" onclick="switchTabFromNav(6)">
                 <span class="tab-nav-icon">🎯</span>
                 <span class="tab-nav-label">面试技巧</span>
+            </div>
+            <div class="tab-nav-item" data-tab="7" onclick="switchTabFromNav(7)">
+                <span class="tab-nav-icon">☕</span>
+                <span class="tab-nav-label">Java基础</span>
             </div>
         </div>
     </div>

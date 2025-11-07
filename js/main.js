@@ -14,7 +14,8 @@ const tabsConfig = [
     { icon: '🐍', label: 'Python测试' },
     { icon: '🔮', label: 'AI辅助测试' },
     { icon: '💼', label: '项目介绍' },
-    { icon: '🎯', label: '面试技巧' }
+    { icon: '🎯', label: '面试技巧' },
+    { icon: '☕', label: 'Java基础' }
 ];
 
 // ==================== Tab切换 ====================
@@ -154,7 +155,8 @@ async function loadTabContent(index) {
         'content/tab4-python.html',
         'content/tab5-ai.html',
         'content/tab6-projects.html',
-        'content/tab7-interview.html'
+        'content/tab7-interview.html',
+        'content/tab8-java.html'
     ];
 
     try {
@@ -705,7 +707,8 @@ function getSectionName(element) {
         '🐍 Python测试',
         '🔮 AI辅助测试',
         '💼 项目介绍',
-        '🎯 面试技巧'
+        '🎯 面试技巧',
+        '☕ Java基础'
     ];
     const tabIndex = parseInt(contentId.replace('content', ''));
     

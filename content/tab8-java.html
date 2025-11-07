@@ -1,0 +1,607 @@
+<h2>☕ Java 基础知识</h2>
+
+<h3>Java 核心概念</h3>
+
+<h4>1. Java 语言特点</h4>
+<div class="tech-box">
+    <p><strong>为什么选择Java？</strong></p>
+    <ul>
+        <li><strong>跨平台性</strong>：一次编写，到处运行（<span class="term" data-pronunciation="Write Once Run Anywhere">WORA</span>）</li>
+        <li><strong>面向对象</strong>：封装、继承、多态三大特性</li>
+        <li><strong>自动内存管理</strong>：垃圾回收（<span class="term" data-pronunciation="Garbage Collection">GC</span>）机制</li>
+        <li><strong>丰富的生态</strong>：大量测试框架（JUnit、TestNG、Selenium等）</li>
+        <li><strong>企业级应用</strong>：Spring、Maven等成熟工具链</li>
+    </ul>
+</div>
+
+<h4>2. JDK、JRE、JVM 的区别</h4>
+<div class="highlight-box">
+    <p><strong><span class="term" data-pronunciation="Java Development Kit">JDK</span></strong>（Java开发工具包）</p>
+    <ul>
+        <li>包含JRE + 开发工具（javac编译器、java运行工具、jar打包工具等）</li>
+        <li>用于开发和编译Java程序</li>
+    </ul>
+    
+    <p><strong><span class="term" data-pronunciation="Java Runtime Environment">JRE</span></strong>（Java运行时环境）</p>
+    <ul>
+        <li>包含JVM + Java核心类库</li>
+        <li>只能运行Java程序，不能编译</li>
+    </ul>
+    
+    <p><strong><span class="term" data-pronunciation="Java Virtual Machine">JVM</span></strong>（Java虚拟机）</p>
+    <ul>
+        <li>负责执行字节码（.class文件）</li>
+        <li>提供跨平台能力</li>
+    </ul>
+</div>
+
+<h3>Java 基础语法</h3>
+
+<h4>1. 数据类型</h4>
+<div class="tech-box">
+    <p><strong>基本数据类型（8种）：</strong></p>
+    <ul>
+        <li><code>byte</code>：8位整数，范围 -128 到 127</li>
+        <li><code>short</code>：16位整数</li>
+        <li><code>int</code>：32位整数（最常用）</li>
+        <li><code>long</code>：64位整数，需要加L后缀，如 <code>100L</code></li>
+        <li><code>float</code>：32位浮点数，需要加F后缀，如 <code>3.14F</code></li>
+        <li><code>double</code>：64位浮点数（小数默认类型）</li>
+        <li><code>char</code>：单个字符，用单引号，如 <code>'A'</code></li>
+        <li><code>boolean</code>：布尔值，只有 <code>true</code> 和 <code>false</code></li>
+    </ul>
+    
+    <p><strong>引用数据类型：</strong></p>
+    <ul>
+        <li><code>String</code>：字符串（不可变）</li>
+        <li>数组：<code>int[] arr = new int[5];</code></li>
+        <li>类、接口等</li>
+    </ul>
+</div>
+
+<h4>2. 常用代码示例</h4>
+<pre>
+// 1. Hello World
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+
+// 2. 变量声明
+int age = 25;
+String name = "张晓雪";
+boolean isPass = true;
+
+// 3. 条件判断
+if (age >= 18) {
+    System.out.println("成年人");
+} else {
+    System.out.println("未成年");
+}
+
+// 4. 循环
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}
+
+// 5. 数组
+String[] names = {"Alice", "Bob", "Charlie"};
+for (String n : names) {
+    System.out.println(n);
+}
+</pre>
+
+<h3>面向对象编程</h3>
+
+<h4>1. 类和对象</h4>
+<pre>
+// 定义一个类
+public class User {
+    // 成员变量（属性）
+    private String name;
+    private int age;
+    
+    // 构造方法
+    public User(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+    
+    // getter 方法
+    public String getName() {
+        return name;
+    }
+    
+    // setter 方法
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    // 普通方法
+    public void sayHello() {
+        System.out.println("Hello, I'm " + name);
+    }
+}
+
+// 创建对象
+User user = new User("张晓雪", 25);
+user.sayHello();
+</pre>
+
+<h4>2. 三大特性</h4>
+<div class="tech-box">
+    <p><strong>封装（Encapsulation）</strong></p>
+    <ul>
+        <li>使用 <code>private</code> 隐藏内部实现</li>
+        <li>提供 <code>public</code> 的getter/setter方法访问</li>
+        <li>好处：保护数据安全，便于修改内部实现</li>
+    </ul>
+    
+    <p><strong>继承（Inheritance）</strong></p>
+    <ul>
+        <li>子类继承父类的属性和方法：<code>class Dog extends Animal</code></li>
+        <li>使用 <code>super</code> 调用父类方法</li>
+        <li>Java只支持单继承（一个类只能继承一个父类）</li>
+    </ul>
+    
+    <p><strong>多态（Polymorphism）</strong></p>
+    <ul>
+        <li>父类引用指向子类对象：<code>Animal dog = new Dog();</code></li>
+        <li>方法重写（Override）：子类重写父类方法</li>
+        <li>方法重载（Overload）：同名方法，参数不同</li>
+    </ul>
+</div>
+
+<h4>3. 继承示例</h4>
+<pre>
+// 父类
+public class Animal {
+    protected String name;
+    
+    public void eat() {
+        System.out.println(name + " is eating");
+    }
+}
+
+// 子类
+public class Dog extends Animal {
+    public Dog(String name) {
+        this.name = name;
+    }
+    
+    // 重写父类方法
+    @Override
+    public void eat() {
+        System.out.println(name + " is eating bones");
+    }
+    
+    // 子类特有方法
+    public void bark() {
+        System.out.println("Woof! Woof!");
+    }
+}
+
+// 使用
+Dog dog = new Dog("小黑");
+dog.eat();   // 输出：小黑 is eating bones
+dog.bark();  // 输出：Woof! Woof!
+</pre>
+
+<h3>常用集合框架</h3>
+
+<h4>1. List（列表 - 有序可重复）</h4>
+<pre>
+import java.util.ArrayList;
+import java.util.List;
+
+// ArrayList - 最常用
+List&lt;String&gt; list = new ArrayList&lt;&gt;();
+list.add("Apple");
+list.add("Banana");
+list.add("Apple");  // 可以重复
+
+System.out.println(list.get(0));  // 获取第一个元素
+System.out.println(list.size());  // 大小
+list.remove(0);                    // 删除第一个
+
+// 遍历
+for (String item : list) {
+    System.out.println(item);
+}
+</pre>
+
+<h4>2. Set（集合 - 无序不重复）</h4>
+<pre>
+import java.util.HashSet;
+import java.util.Set;
+
+Set&lt;String&gt; set = new HashSet&lt;&gt;();
+set.add("Apple");
+set.add("Banana");
+set.add("Apple");  // 重复的不会添加
+
+System.out.println(set.size());  // 输出：2（自动去重）
+System.out.println(set.contains("Apple"));  // true
+</pre>
+
+<h4>3. Map（映射 - 键值对）</h4>
+<pre>
+import java.util.HashMap;
+import java.util.Map;
+
+Map&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+map.put("Alice", 25);
+map.put("Bob", 30);
+map.put("Charlie", 28);
+
+System.out.println(map.get("Alice"));  // 25
+System.out.println(map.containsKey("Bob"));  // true
+
+// 遍历
+for (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) {
+    System.out.println(entry.getKey() + ": " + entry.getValue());
+}
+</pre>
+
+<h3>异常处理</h3>
+
+<h4>1. try-catch-finally</h4>
+<pre>
+try {
+    int result = 10 / 0;  // 会抛出异常
+} catch (ArithmeticException e) {
+    System.out.println("除数不能为0: " + e.getMessage());
+    e.printStackTrace();  // 打印堆栈信息
+} finally {
+    System.out.println("无论是否异常都会执行");
+}
+</pre>
+
+<h4>2. 常见异常</h4>
+<div class="tech-box">
+    <ul>
+        <li><code>NullPointerException</code>：空指针异常（最常见）</li>
+        <li><code>ArrayIndexOutOfBoundsException</code>：数组越界</li>
+        <li><code>NumberFormatException</code>：数字格式转换错误</li>
+        <li><code>FileNotFoundException</code>：文件未找到</li>
+        <li><code>IOException</code>：输入输出异常</li>
+    </ul>
+</div>
+
+<h4>3. 抛出异常</h4>
+<pre>
+public void checkAge(int age) throws Exception {
+    if (age < 18) {
+        throw new Exception("年龄必须大于18岁");
+    }
+}
+</pre>
+
+<h3>Java 在自动化测试中的应用</h3>
+
+<h4>1. Selenium WebDriver 基础</h4>
+<pre>
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.By;
+
+public class SeleniumTest {
+    public static void main(String[] args) {
+        // 设置驱动
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        
+        // 创建浏览器实例
+        WebDriver driver = new ChromeDriver();
+        
+        try {
+            // 打开网页
+            driver.get("https://www.baidu.com");
+            
+            // 查找元素并操作
+            driver.findElement(By.id("kw")).sendKeys("测试");
+            driver.findElement(By.id("su")).click();
+            
+            // 等待
+            Thread.sleep(2000);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭浏览器
+            driver.quit();
+        }
+    }
+}
+</pre>
+
+<h4>2. JUnit 单元测试</h4>
+<pre>
+import org.junit.Test;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.After;
+
+public class CalculatorTest {
+    private Calculator calc;
+    
+    @Before  // 每个测试前执行
+    public void setUp() {
+        calc = new Calculator();
+    }
+    
+    @Test  // 测试方法
+    public void testAdd() {
+        int result = calc.add(2, 3);
+        Assert.assertEquals(5, result);
+    }
+    
+    @Test
+    public void testDivide() {
+        double result = calc.divide(10, 2);
+        Assert.assertEquals(5.0, result, 0.01);
+    }
+    
+    @After  // 每个测试后执行
+    public void tearDown() {
+        calc = null;
+    }
+}
+</pre>
+
+<h4>3. TestNG 测试框架</h4>
+<pre>
+import org.testng.annotations.*;
+import org.testng.Assert;
+
+public class LoginTest {
+    
+    @BeforeClass
+    public void beforeClass() {
+        System.out.println("开始测试类");
+    }
+    
+    @BeforeMethod
+    public void beforeMethod() {
+        System.out.println("准备测试环境");
+    }
+    
+    @Test(priority = 1)
+    public void testValidLogin() {
+        boolean result = login("admin", "123456");
+        Assert.assertTrue(result, "登录应该成功");
+    }
+    
+    @Test(priority = 2, dependsOnMethods = {"testValidLogin"})
+    public void testInvalidLogin() {
+        boolean result = login("admin", "wrong");
+        Assert.assertFalse(result, "登录应该失败");
+    }
+    
+    @AfterMethod
+    public void afterMethod() {
+        System.out.println("清理测试环境");
+    }
+    
+    @AfterClass
+    public void afterClass() {
+        System.out.println("测试类结束");
+    }
+    
+    private boolean login(String user, String pass) {
+        // 模拟登录逻辑
+        return user.equals("admin") && pass.equals("123456");
+    }
+}
+</pre>
+
+<h3>实用工具类和方法</h3>
+
+<h4>1. String 常用方法</h4>
+<pre>
+String str = "Hello World";
+
+str.length();              // 11
+str.charAt(0);             // 'H'
+str.substring(0, 5);       // "Hello"
+str.toLowerCase();         // "hello world"
+str.toUpperCase();         // "HELLO WORLD"
+str.contains("World");     // true
+str.startsWith("Hello");   // true
+str.endsWith("World");     // true
+str.replace("World", "Java");  // "Hello Java"
+str.split(" ");            // ["Hello", "World"]
+str.trim();                // 去除首尾空格
+</pre>
+
+<h4>2. 日期处理</h4>
+<pre>
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+// 获取当前日期
+LocalDate today = LocalDate.now();
+System.out.println(today);  // 2024-11-07
+
+// 获取当前日期时间
+LocalDateTime now = LocalDateTime.now();
+System.out.println(now);  // 2024-11-07T14:30:00
+
+// 格式化日期
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+String formatted = now.format(formatter);
+System.out.println(formatted);  // 2024-11-07 14:30:00
+</pre>
+
+<h4>3. 文件操作</h4>
+<pre>
+import java.io.*;
+import java.nio.file.*;
+
+// 读取文件
+try {
+    String content = Files.readString(Paths.get("test.txt"));
+    System.out.println(content);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// 写入文件
+try {
+    Files.writeString(Paths.get("output.txt"), "测试内容");
+} catch (IOException e) {
+    e.printStackTrace();
+}
+
+// 检查文件是否存在
+boolean exists = Files.exists(Paths.get("test.txt"));
+</pre>
+
+<h3>面试常见问题</h3>
+
+<div class="warning-box">
+    <h4>1. == 和 equals() 的区别</h4>
+    <ul>
+        <li><code>==</code>：比较基本类型的值，或引用类型的内存地址</li>
+        <li><code>equals()</code>：比较对象的内容是否相等</li>
+    </ul>
+    <pre>
+String a = new String("hello");
+String b = new String("hello");
+System.out.println(a == b);       // false（地址不同）
+System.out.println(a.equals(b));  // true（内容相同）
+    </pre>
+</div>
+
+<div class="warning-box">
+    <h4>2. String、StringBuilder、StringBuffer 的区别</h4>
+    <ul>
+        <li><code>String</code>：不可变，每次修改都创建新对象</li>
+        <li><code>StringBuilder</code>：可变，线程不安全，性能好（单线程推荐）</li>
+        <li><code>StringBuffer</code>：可变，线程安全，性能稍差（多线程推荐）</li>
+    </ul>
+</div>
+
+<div class="warning-box">
+    <h4>3. ArrayList 和 LinkedList 的区别</h4>
+    <ul>
+        <li><code>ArrayList</code>：基于数组，查询快，增删慢</li>
+        <li><code>LinkedList</code>：基于链表，查询慢，增删快</li>
+    </ul>
+</div>
+
+<div class="example-box">
+    <h4>4. 访问修饰符</h4>
+    <ul>
+        <li><code>public</code>：公开的，任何地方都可以访问</li>
+        <li><code>protected</code>：受保护的，同包和子类可以访问</li>
+        <li><code>default</code>（不写）：默认的，仅同包可以访问</li>
+        <li><code>private</code>：私有的，仅本类可以访问</li>
+    </ul>
+</div>
+
+<h3>测试开发实用技巧</h3>
+
+<h4>1. 封装测试基类</h4>
+<pre>
+public class BaseTest {
+    protected WebDriver driver;
+    
+    @BeforeClass
+    public void setUp() {
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+    }
+    
+    @AfterClass
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+    
+    // 封装常用方法
+    protected void navigateTo(String url) {
+        driver.get(url);
+    }
+    
+    protected WebElement findElement(By by) {
+        return driver.findElement(by);
+    }
+}
+</pre>
+
+<h4>2. 使用配置文件</h4>
+<pre>
+import java.util.Properties;
+import java.io.FileInputStream;
+
+public class ConfigReader {
+    private Properties prop;
+    
+    public ConfigReader(String filePath) {
+        prop = new Properties();
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            prop.load(fis);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public String getProperty(String key) {
+        return prop.getProperty(key);
+    }
+}
+
+// config.properties 文件内容：
+// baseUrl=https://www.example.com
+// username=admin
+// password=123456
+
+// 使用
+ConfigReader config = new ConfigReader("config.properties");
+String url = config.getProperty("baseUrl");
+</pre>
+
+<h4>3. 日志记录</h4>
+<pre>
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoginTest {
+    private static final Logger logger = LoggerFactory.getLogger(LoginTest.class);
+    
+    @Test
+    public void testLogin() {
+        logger.info("开始执行登录测试");
+        try {
+            // 测试逻辑
+            logger.debug("输入用户名和密码");
+            // ...
+            logger.info("登录测试通过");
+        } catch (Exception e) {
+            logger.error("登录测试失败: " + e.getMessage());
+        }
+    }
+}
+</pre>
+
+<div class="highlight-box">
+    <h4>💡 测试开发学习建议</h4>
+    <ul>
+        <li>✅ 掌握Java基础语法（变量、循环、条件、数组）</li>
+        <li>✅ 理解面向对象（类、对象、继承、封装）</li>
+        <li>✅ 熟悉集合框架（List、Set、Map的使用）</li>
+        <li>✅ 会用异常处理保证代码健壮性</li>
+        <li>✅ 掌握JUnit或TestNG测试框架</li>
+        <li>✅ 学会封装常用方法提高代码复用性</li>
+        <li>✅ 理解配置文件和日志的使用</li>
+        <li>⭐ 不需要深入JVM原理、设计模式等高级内容</li>
+        <li>⭐ 重点是能写出清晰、可维护的测试代码</li>
+    </ul>
+</div>
+
