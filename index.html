@@ -28,14 +28,51 @@
             </div>
         </div>
 
-        <div class="nav-tabs">
-            <button class="nav-tab active" onclick="switchTab(0)">📋 个人简历</button>
-            <button class="nav-tab" onclick="switchTab(1)">🧪 测试基础</button>
-            <button class="nav-tab" onclick="switchTab(2)">🤖 自动化测试</button>
-            <button class="nav-tab" onclick="switchTab(3)">🐍 Python测试</button>
-            <button class="nav-tab" onclick="switchTab(4)">🔮 AI辅助测试</button>
-            <button class="nav-tab" onclick="switchTab(5)">💼 项目介绍</button>
-            <button class="nav-tab" onclick="switchTab(6)">🎯 面试技巧</button>
+        <!-- Tab选择器 -->
+        <div class="tab-selector-container">
+            <div class="tab-selector" id="tabSelector" onclick="toggleTabDropdown()">
+                <span class="tab-selector-icon" id="tabSelectorIcon">📋</span>
+                <span class="tab-selector-text" id="tabSelectorText">个人简历</span>
+                <span class="tab-selector-badge" id="tabSelectorBadge">1/7</span>
+                <span class="tab-selector-arrow">▼</span>
+            </div>
+            <div class="tab-dropdown" id="tabDropdown">
+                <div class="tab-dropdown-item" data-tab="0" onclick="selectTab(0)">
+                    <span class="tab-dropdown-icon">📋</span>
+                    <span class="tab-dropdown-label">个人简历</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="1" onclick="selectTab(1)">
+                    <span class="tab-dropdown-icon">🧪</span>
+                    <span class="tab-dropdown-label">测试基础</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="2" onclick="selectTab(2)">
+                    <span class="tab-dropdown-icon">🤖</span>
+                    <span class="tab-dropdown-label">自动化测试</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="3" onclick="selectTab(3)">
+                    <span class="tab-dropdown-icon">🐍</span>
+                    <span class="tab-dropdown-label">Python测试</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="4" onclick="selectTab(4)">
+                    <span class="tab-dropdown-icon">🔮</span>
+                    <span class="tab-dropdown-label">AI辅助测试</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="5" onclick="selectTab(5)">
+                    <span class="tab-dropdown-icon">💼</span>
+                    <span class="tab-dropdown-label">项目介绍</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+                <div class="tab-dropdown-item" data-tab="6" onclick="selectTab(6)">
+                    <span class="tab-dropdown-icon">🎯</span>
+                    <span class="tab-dropdown-label">面试技巧</span>
+                    <span class="tab-dropdown-check">✓</span>
+                </div>
+            </div>
         </div>
 
         <div class="content active" id="content0">
@@ -82,6 +119,50 @@
 
     <!-- 搜索结果面板切换按钮 -->
     <button class="search-toggle-panel" id="searchTogglePanel" title="显示搜索结果列表">📋</button>
+    
+    <!-- 左侧Tab导航切换按钮 -->
+    <button class="tab-nav-toggle" id="tabNavToggle" onclick="toggleTabNav()" title="Tab导航">📑</button>
+    
+    <!-- 左侧Tab导航面板 -->
+    <div class="tab-nav-panel" id="tabNavPanel">
+        <div class="tab-nav-header">
+            <div class="tab-nav-title">
+                <span>📑</span>
+                <span>Tab导航</span>
+            </div>
+            <button class="tab-nav-close" onclick="closeTabNav()">✕</button>
+        </div>
+        <div class="tab-nav-content" id="tabNavContent">
+            <div class="tab-nav-item" data-tab="0" onclick="switchTabFromNav(0)">
+                <span class="tab-nav-icon">📋</span>
+                <span class="tab-nav-label">个人简历</span>
+            </div>
+            <div class="tab-nav-item" data-tab="1" onclick="switchTabFromNav(1)">
+                <span class="tab-nav-icon">🧪</span>
+                <span class="tab-nav-label">测试基础</span>
+            </div>
+            <div class="tab-nav-item" data-tab="2" onclick="switchTabFromNav(2)">
+                <span class="tab-nav-icon">🤖</span>
+                <span class="tab-nav-label">自动化测试</span>
+            </div>
+            <div class="tab-nav-item" data-tab="3" onclick="switchTabFromNav(3)">
+                <span class="tab-nav-icon">🐍</span>
+                <span class="tab-nav-label">Python测试</span>
+            </div>
+            <div class="tab-nav-item" data-tab="4" onclick="switchTabFromNav(4)">
+                <span class="tab-nav-icon">🔮</span>
+                <span class="tab-nav-label">AI辅助测试</span>
+            </div>
+            <div class="tab-nav-item" data-tab="5" onclick="switchTabFromNav(5)">
+                <span class="tab-nav-icon">💼</span>
+                <span class="tab-nav-label">项目介绍</span>
+            </div>
+            <div class="tab-nav-item" data-tab="6" onclick="switchTabFromNav(6)">
+                <span class="tab-nav-icon">🎯</span>
+                <span class="tab-nav-label">面试技巧</span>
+            </div>
+        </div>
+    </div>
     
     <!-- 浮动导航切换按钮 -->
     <button class="floating-nav-toggle" id="floatingNavToggle" onclick="toggleFloatingNav()" title="页面导航">📑</button>

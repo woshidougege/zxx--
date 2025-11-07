@@ -5,15 +5,22 @@ let searchMatches = [];
 let currentSearchIndex = 0;
 let searchResultsData = [];  // 搜索结果数据（用于侧边栏显示）
 
+// Tab配置数据
+const tabsConfig = [
+    { icon: '📋', label: '个人简历' },
+    { icon: '🧪', label: '测试基础' },
+    { icon: '🤖', label: '自动化测试' },
+    { icon: '🐍', label: 'Python测试' },
+    { icon: '🔮', label: 'AI辅助测试' },
+    { icon: '💼', label: '项目介绍' },
+    { icon: '🎯', label: '面试技巧' }
+];
+
 // ==================== Tab切换 ====================
 function switchTab(index) {
-    const tabs = document.querySelectorAll('.nav-tab');
     const contents = document.querySelectorAll('.content');
     
-    tabs.forEach(tab => tab.classList.remove('active'));
     contents.forEach(content => content.classList.remove('active'));
-    
-    tabs[index].classList.add('active');
     contents[index].classList.add('active');
 
     localStorage.setItem('activeTab', index);
@@ -21,6 +28,113 @@ function switchTab(index) {
 
     // 加载对应tab内容
     loadTabContent(index);
+    
+    // 更新左侧Tab导航的active状态
+    updateTabNavActive(index);
+    
+    // 更新下拉选择器显示
+    updateTabSelector(index);
+    
+    // 更新下拉菜单的active状态
+    updateTabDropdownActive(index);
+}
+
+// ==================== 更新Tab选择器显示 ====================
+function updateTabSelector(index) {
+    const tabSelectorIcon = document.getElementById('tabSelectorIcon');
+    const tabSelectorText = document.getElementById('tabSelectorText');
+    const tabSelectorBadge = document.getElementById('tabSelectorBadge');
+    
+    if (tabSelectorIcon && tabSelectorText && tabsConfig[index]) {
+        tabSelectorIcon.textContent = tabsConfig[index].icon;
+        tabSelectorText.textContent = tabsConfig[index].label;
+    }
+    
+    if (tabSelectorBadge) {
+        tabSelectorBadge.textContent = `${index + 1}/${tabsConfig.length}`;
+    }
+}
+
+// ==================== 更新下拉菜单active状态 ====================
+function updateTabDropdownActive(index) {
+    const dropdownItems = document.querySelectorAll('.tab-dropdown-item');
+    dropdownItems.forEach((item, i) => {
+        if (i === index) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+// ==================== 切换下拉菜单显示/隐藏 ====================
+function toggleTabDropdown() {
+    const tabDropdown = document.getElementById('tabDropdown');
+    const tabSelector = document.getElementById('tabSelector');
+    
+    if (tabDropdown && tabSelector) {
+        tabDropdown.classList.toggle('show');
+        tabSelector.classList.toggle('open');
+    }
+}
+
+// ==================== 从下拉菜单选择Tab ====================
+function selectTab(index) {
+    switchTab(index);
+    // 选择后关闭下拉菜单
+    closeTabDropdown();
+}
+
+// ==================== 关闭下拉菜单 ====================
+function closeTabDropdown() {
+    const tabDropdown = document.getElementById('tabDropdown');
+    const tabSelector = document.getElementById('tabSelector');
+    
+    if (tabDropdown && tabSelector) {
+        tabDropdown.classList.remove('show');
+        tabSelector.classList.remove('open');
+    }
+}
+
+// ==================== 从导航切换Tab ====================
+function switchTabFromNav(index) {
+    switchTab(index);
+    // 切换后关闭左侧导航
+    closeTabNav();
+}
+
+// ==================== 更新左侧Tab导航的active状态 ====================
+function updateTabNavActive(index) {
+    const tabNavItems = document.querySelectorAll('.tab-nav-item');
+    tabNavItems.forEach((item, i) => {
+        if (i === index) {
+            item.classList.add('active');
+        } else {
+            item.classList.remove('active');
+        }
+    });
+}
+
+// ==================== 切换左侧Tab导航显示/隐藏 ====================
+function toggleTabNav() {
+    const tabNavPanel = document.getElementById('tabNavPanel');
+    const tabNavToggle = document.getElementById('tabNavToggle');
+    
+    if (tabNavPanel && tabNavToggle) {
+        tabNavPanel.classList.toggle('show');
+        tabNavToggle.classList.toggle('nav-open');
+    }
+}
+
+// ==================== 关闭左侧Tab导航 ====================
+function closeTabNav() {
+    const tabNavPanel = document.getElementById('tabNavPanel');
+    const tabNavToggle = document.getElementById('tabNavToggle');
+    
+    if (tabNavPanel && tabNavToggle) {
+        tabNavPanel.classList.remove('show');
+        tabNavToggle.classList.remove('nav-open');
+    }
 }
 
 // ==================== 加载Tab内容 ====================
@@ -286,6 +400,27 @@ function navigateSearch(direction) {
     }
 }
 
+// ==================== 移动端滑动切换Tab ====================
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleSwipe() {
+    const swipeThreshold = 50; // 最小滑动距离
+    const diff = touchEndX - touchStartX;
+    
+    if (Math.abs(diff) > swipeThreshold) {
+        const currentTab = parseInt(localStorage.getItem('activeTab') || '0');
+        
+        if (diff > 0 && currentTab > 0) {
+            // 右滑 - 上一个tab
+            switchTab(currentTab - 1);
+        } else if (diff < 0 && currentTab < tabsConfig.length - 1) {
+            // 左滑 - 下一个tab
+            switchTab(currentTab + 1);
+        }
+    }
+}
+
 // ==================== 页面初始化 ====================
 document.addEventListener('DOMContentLoaded', function() {
     // 恢复上次的Tab
@@ -294,6 +429,19 @@ document.addEventListener('DOMContentLoaded', function() {
         switchTab(parseInt(savedTab));
     } else {
         loadTabContent(0);
+    }
+    
+    // 添加移动端滑动事件
+    const container = document.querySelector('.container');
+    if (container) {
+        container.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        container.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
     }
 
     // 搜索功能
@@ -335,6 +483,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // ESC键关闭下拉菜单
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeTabDropdown();
+            closeMobileTooltip();
+        }
+    });
+
     // 返回顶部按钮
     const backToTopBtn = document.getElementById('backToTop');
     
@@ -350,10 +506,16 @@ document.addEventListener('DOMContentLoaded', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    // 点击其他地方关闭tooltip
+    // 点击其他地方关闭tooltip和下拉菜单
     document.addEventListener('click', function(e) {
+        // 关闭tooltip
         if (!e.target.closest('.term') && !e.target.closest('.explain') && !e.target.closest('.mobile-tooltip-card')) {
             closeMobileTooltip();
+        }
+        
+        // 关闭tab下拉菜单
+        if (!e.target.closest('.tab-selector-container')) {
+            closeTabDropdown();
         }
     });
 
