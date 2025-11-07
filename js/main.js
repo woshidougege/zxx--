@@ -51,6 +51,14 @@ async function loadTabContent(index) {
         content.innerHTML = html;
         content.dataset.loaded = 'true';
         
+        // 生成页内导航
+        generatePageNav(content);
+        
+        // 自动标记术语（让每个术语都能点击）
+        if (typeof markTermsAutomatically === 'function') {
+            markTermsAutomatically(content);
+        }
+        
         // 初始化术语点击事件
         initTermClicks();
     } catch (error) {

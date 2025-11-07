@@ -83,6 +83,23 @@
     <!-- 搜索结果面板切换按钮 -->
     <button class="search-toggle-panel" id="searchTogglePanel" title="显示搜索结果列表">📋</button>
     
+    <!-- 浮动导航切换按钮 -->
+    <button class="floating-nav-toggle" id="floatingNavToggle" onclick="toggleFloatingNav()" title="页面导航">📑</button>
+    
+    <!-- 浮动导航面板 -->
+    <div class="floating-nav" id="floatingNav">
+        <div class="floating-nav-header">
+            <div class="floating-nav-title">
+                <span>📑</span>
+                <span>页面导航</span>
+            </div>
+            <button class="floating-nav-close" onclick="closeFloatingNav()">✕</button>
+        </div>
+        <div class="floating-nav-content" id="floatingNavContent">
+            <div style="text-align:center;padding:40px;color:#999;">加载中...</div>
+        </div>
+    </div>
+    
     <!-- 搜索结果面板 -->
     <div class="search-results-panel" id="searchResultsPanel">
         <div class="search-results-header">
@@ -115,6 +132,8 @@
         </div>
     </div>
 
+    <script src="js/terms-dictionary.js"></script>
+    <script src="js/page-nav.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
