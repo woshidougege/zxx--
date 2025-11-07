@@ -4,6 +4,7 @@
 let searchMatches = [];
 let currentSearchIndex = 0;
 let searchResultsData = [];  // 搜索结果数据（用于侧边栏显示）
+let searchDebounceTimer = null;  // 搜索防抖计时器
 
 // Tab配置数据
 const tabsConfig = [
@@ -222,10 +223,12 @@ function closeMobileTooltip() {
     document.getElementById('mobileTooltip').classList.remove('show');
 }
 
-// ==================== 搜索功能 ====================
-function performSearch(searchTerm) {
-    const activeContent = document.querySelector('.content.active');
-    clearHighlights(activeContent);
+// ==================== 搜索功能（全局搜索所有tab） ====================
+async function performSearch(searchTerm) {
+    // 清除所有页面的高亮
+    const allContents = document.querySelectorAll('.content');
+    allContents.forEach(content => clearHighlights(content));
+    
     searchMatches = [];
     searchResultsData = [];
     currentSearchIndex = 0;
@@ -240,16 +243,38 @@ function performSearch(searchTerm) {
         return;
     }
 
-    highlightText(activeContent, searchTerm);
+    // 显示加载状态
+    const searchCount = document.getElementById('searchCount');
+    const sidebarCounter = document.getElementById('sidebarCounter');
+    if (searchCount) searchCount.textContent = '搜索中...';
+    if (sidebarCounter) sidebarCounter.textContent = '搜索中...';
+
+    // 确保所有tab内容都已加载
+    for (let i = 0; i < tabsConfig.length; i++) {
+        await loadTabContent(i);
+    }
+    
+    // 在所有tab中搜索
+    allContents.forEach((content, tabIndex) => {
+        highlightText(content, searchTerm, tabIndex);
+    });
     
     // 收集所有高亮的mark元素
-    searchMatches = Array.from(activeContent.querySelectorAll('mark'));
+    allContents.forEach((content, tabIndex) => {
+        const marks = Array.from(content.querySelectorAll('mark'));
+        marks.forEach(mark => {
+            // 为每个mark添加tab索引
+            mark.dataset.tabIndex = tabIndex;
+            searchMatches.push(mark);
+        });
+    });
     
     // 生成搜索结果数据
     searchMatches.forEach((mark, index) => {
         searchResultsData.push({
             index: index,
             element: mark,
+            tabIndex: parseInt(mark.dataset.tabIndex),
             section: getSectionName(mark),
             subsection: getSubsectionName(mark),
             context: extractContext(mark)
@@ -261,6 +286,13 @@ function performSearch(searchTerm) {
     
     if (searchMatches.length > 0) {
         currentSearchIndex = 0;
+        // 如果第一个结果不在当前tab，切换到对应tab
+        const firstMatch = searchMatches[0];
+        const firstMatchTab = parseInt(firstMatch.dataset.tabIndex);
+        const currentTab = parseInt(localStorage.getItem('activeTab') || '0');
+        if (firstMatchTab !== currentTab) {
+            switchTab(firstMatchTab);
+        }
         highlightCurrentMatch();
         updateSearchUI(searchMatches.length, 1);
         
@@ -378,6 +410,14 @@ function navigateSearch(direction) {
         currentSearchIndex = (currentSearchIndex - 1 + searchMatches.length) % searchMatches.length;
     }
     
+    // 检查是否需要切换tab
+    const currentMatch = searchMatches[currentSearchIndex];
+    const matchTabIndex = parseInt(currentMatch.dataset.tabIndex);
+    const currentTab = parseInt(localStorage.getItem('activeTab') || '0');
+    if (matchTabIndex !== currentTab) {
+        switchTab(matchTabIndex);
+    }
+    
     // 高亮当前结果
     highlightCurrentMatch();
     updateSearchUI(searchMatches.length, currentSearchIndex + 1);
@@ -453,7 +493,15 @@ document.addEventListener('DOMContentLoaded', function() {
     searchInput.addEventListener('input', function() {
         const value = this.value.trim();
         searchClear.classList.toggle('visible', value.length > 0);
-        performSearch(value);
+        
+        // 防抖：延迟执行搜索
+        if (searchDebounceTimer) {
+            clearTimeout(searchDebounceTimer);
+        }
+        
+        searchDebounceTimer = setTimeout(() => {
+            performSearch(value);
+        }, 300); // 300ms延迟
     });
 
     searchClear.addEventListener('click', function() {
@@ -541,9 +589,19 @@ document.addEventListener('DOMContentLoaded', function() {
     sidebarSearchInput.addEventListener('input', function() {
         if (!isSyncing) {
             isSyncing = true;
+            const value = this.value.trim();
             searchInput.value = this.value;
-            const event = new Event('input', { bubbles: true });
-            searchInput.dispatchEvent(event);
+            searchClear.classList.toggle('visible', value.length > 0);
+            
+            // 防抖：延迟执行搜索
+            if (searchDebounceTimer) {
+                clearTimeout(searchDebounceTimer);
+            }
+            
+            searchDebounceTimer = setTimeout(() => {
+                performSearch(value);
+            }, 300);
+            
             isSyncing = false;
         }
     });
@@ -743,6 +801,14 @@ function jumpToSearchResult(index) {
     
     // 更新索引
     currentSearchIndex = index;
+    
+    // 检查是否需要切换tab
+    const currentMatch = searchMatches[currentSearchIndex];
+    const matchTabIndex = parseInt(currentMatch.dataset.tabIndex);
+    const currentTab = parseInt(localStorage.getItem('activeTab') || '0');
+    if (matchTabIndex !== currentTab) {
+        switchTab(matchTabIndex);
+    }
     
     // 高亮当前结果
     highlightCurrentMatch();
